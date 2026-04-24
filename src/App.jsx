@@ -27,7 +27,7 @@ const IMAGES = {
   hifu: "https://images.unsplash.com/photo-1519415510236-85592ada7b08?auto=format&fit=crop&q=80&w=1200",
   hair_removal: "https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?auto=format&fit=crop&q=80&w=800",
   before: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&q=80&w=600",
-  after: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=600",
+  after: "public/images/sau1.jpg",
 };
 
 const App = () => {
@@ -59,6 +59,13 @@ const App = () => {
     { name: "Kết Quả", href: "#results" }
   ];
 
+  // --- QUẢN LÝ LINK MẠNG XÃ HỘI ---
+  const socialLinks = [
+    { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=100063713103271' },
+    { name: 'TikTok', url: 'https://tiktok.com/@huonghousespa' },
+    { name: 'Zalo', url: 'https://zalo.me/0901234567' }
+  ];
+
   return (
     <div className="min-h-screen bg-[#FDFBF9] text-[#2D2D2D] selection:bg-[#D4AF37] selection:text-white" style={{ fontFamily: '"Montserrat", sans-serif' }}>
       
@@ -81,7 +88,7 @@ const App = () => {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <a href="https://zalo.me/your-id" className="hidden sm:flex items-center gap-2 bg-[#0068FF] text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 transition-all">
+            <a href={socialLinks[2].url} target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center gap-2 bg-[#0068FF] text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 transition-all">
               <MessageCircle size={14} /> Zalo Tư Vấn
             </a>
             <button 
@@ -149,9 +156,9 @@ const App = () => {
               <button className="bg-[#2D2D2D] text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base shadow-2xl hover:bg-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide">
                 ĐẶT LỊCH LẤY NHÂN MỤN <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="bg-white text-[#2D2D2D] border border-gray-200 px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base hover:border-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide shadow-sm">
+              <a href="#results" className="bg-white text-[#2D2D2D] border border-gray-200 px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base hover:border-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide shadow-sm">
                 XEM KẾT QUẢ THẬT
-              </button>
+              </a>
             </div>
 
             <div className="mt-10 flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-bold uppercase tracking-widest opacity-60">
@@ -386,7 +393,7 @@ const App = () => {
              <button className="w-full sm:w-auto bg-[#2D2D2D] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-[#D4AF37] transition-all shadow-2xl tracking-wider">
                ĐẶT LỊCH NGAY
              </button>
-             <a href="https://zalo.me/your-id" className="w-full sm:w-auto bg-[#0068FF] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-blue-600 transition-all shadow-2xl flex items-center justify-center gap-3">
+             <a href={socialLinks[2].url} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-[#0068FF] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-blue-600 transition-all shadow-2xl flex items-center justify-center gap-3">
                <MessageCircle size={24} /> NHẮN ZALO
              </a>
           </div>
@@ -405,9 +412,19 @@ const App = () => {
             <p className="text-gray-400 text-sm max-w-sm mb-8 leading-relaxed font-light italic">
               "Làn da đẹp không tự nhiên mà có, nó đến từ sự chăm sóc tận tâm tại Hương House."
             </p>
+            
+            {/* --- CẬP NHẬT PHẦN MẠNG XÃ HỘI --- */}
             <div className="flex gap-4">
-               {['Facebook', 'TikTok', 'Zalo'].map(social => (
-                 <div key={social} className="px-4 py-2 border border-gray-100 rounded-full text-[10px] font-bold hover:bg-[#D4AF37] hover:text-white transition-all cursor-pointer tracking-widest uppercase">{social}</div>
+               {socialLinks.map(social => (
+                 <a 
+                   key={social.name} 
+                   href={social.url} 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="px-4 py-2 border border-gray-100 rounded-full text-[10px] font-bold hover:bg-[#D4AF37] hover:border-[#D4AF37] hover:text-white transition-all cursor-pointer tracking-widest uppercase block"
+                 >
+                   {social.name}
+                 </a>
                ))}
             </div>
           </div>
@@ -425,7 +442,7 @@ const App = () => {
             <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6 text-[#D4AF37]">Liên hệ</h4>
             <p className="text-xs text-gray-500 leading-7 font-medium mb-4">
               123 Đường Sắc Đẹp, Quận 1, TP. HCM<br />
-              <span className="text-[#2D2D2D] font-bold">Hotline: 090 123 4567</span>
+              <span className="text-[#2D2D2D] font-bold">Hotline: 094 305 91 67</span>
             </p>
             <p className="text-xs text-gray-500 leading-7 font-medium">
               Mở cửa: 09:00 - 20:00<br />
@@ -440,12 +457,12 @@ const App = () => {
         <button className="flex-[3] bg-[#D4AF37] text-white py-4 rounded-2xl font-bold shadow-lg text-[10px] uppercase tracking-[0.2em]">
           Lấy Mụn Ngay
         </button>
-        <button className="flex-1 bg-[#0068FF] text-white rounded-2xl flex items-center justify-center shadow-lg">
+        <a href={socialLinks[2].url} target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#0068FF] text-white rounded-2xl flex items-center justify-center shadow-lg">
           <MessageCircle size={24} />
-        </button>
-        <button className="flex-1 bg-[#2D2D2D] text-white rounded-2xl flex items-center justify-center shadow-lg">
+        </a>
+        <a href="tel:0901234567" className="flex-1 bg-[#2D2D2D] text-white rounded-2xl flex items-center justify-center shadow-lg">
           <Phone size={24} />
-        </button>
+        </a>
       </div>
 
     </div>
