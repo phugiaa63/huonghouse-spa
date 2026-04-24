@@ -14,20 +14,57 @@ import {
   Target,
   HeartPulse,
   Flame,
-  Infinity
+  Infinity,
+  Clock,
+  Plus,
+  Minus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- HÌNH ẢNH CAO CẤP ---
 const IMAGES = {
+  logo: "/public/images/lgHHS.png",
   hero: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1600",
   acne_treatment: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800",
   peel_skin: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&q=80&w=800",
   meso: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=800",
   hifu: "https://images.unsplash.com/photo-1519415510236-85592ada7b08?auto=format&fit=crop&q=80&w=1200",
   hair_removal: "https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?auto=format&fit=crop&q=80&w=800",
-  before: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&q=80&w=600",
-  after: "public/images/sau1.jpg",
+  before: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&q=80&w=800",
+  after: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=800",
+  gallery: [
+    "images/bf1.jpg",
+    "images/bf5.jpg",
+    "images/bf3.jpg",
+    "images/bf4.jpg"
+  ]
+};
+
+const FAQItem = ({ question, answer }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="border-b border-gray-100 py-6">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex justify-between items-center text-left gap-4"
+      >
+        <span className="font-bold text-sm md:text-base uppercase tracking-tight">{question}</span>
+        {isOpen ? <Minus size={18} className="text-[#D4AF37]" /> : <Plus size={18} className="text-gray-400" />}
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <p className="text-gray-500 text-sm mt-4 leading-relaxed font-light">{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 const App = () => {
@@ -45,25 +82,34 @@ const App = () => {
   const handleMove = (e) => {
     if (!sliderRef.current) return;
     const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.clientX || (e.touches && e.touches[0].clientX);
-    if (!x) return;
-    const position = ((x - rect.left) / rect.width) * 100;
+    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+    const position = (x / rect.width) * 100;
     setSliderPos(Math.max(0, Math.min(100, position)));
   };
 
   const navLinks = [
     { name: "Trị Mụn", href: "#acne" },
-    { name: "Điều Trị Da", href: "#treatments" },
-    { name: "Trẻ Hóa", href: "#hifu" },
-    { name: "Triệt Lông", href: "#laser" },
-    { name: "Kết Quả", href: "#results" }
+    { name: "Quy Trình", href: "#process" },
+    { name: "Bảng Giá", href: "#pricing" },
+    { name: "Kết Quả", href: "#results" },
+    { name: "Hỏi Đáp", href: "#faq" }
   ];
 
-  // --- QUẢN LÝ LINK MẠNG XÃ HỘI ---
   const socialLinks = [
     { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=100063713103271' },
     { name: 'TikTok', url: 'https://tiktok.com/@huonghousespa' },
-    { name: 'Zalo', url: 'https://zalo.me/0901234567' }
+    { name: 'Zalo', url: 'https://zalo.me/0943059167' }
+  ];
+
+  // Bảng giá lấy từ hình ảnh thực tế
+  const pricingData = [
+    { name: "Nặn Mụn Cơ Bản", price: "250", unit: "k", desc: "Vệ sinh da và lấy nhân mụn chuẩn y khoa." },
+    { name: "Nặn Mụn Oxygen", price: "380", unit: "k", desc: "Cung cấp oxy tươi giúp da phục hồi, giảm sưng." },
+    { name: "Nặn Mụn 4F", price: "650", unit: "k", desc: "Phác đồ điều trị chuyên sâu cho mụn viêm nặng." },
+    { name: "Pumpkin Peel", price: "650", unit: "k", desc: "Thay da sinh học bằng bí đỏ, sáng da mờ thâm." },
+    { name: "Peel Châu Âu", price: "2.200", unit: "k", desc: "Công nghệ tái tạo da cao cấp từ Châu Âu." },
+    { name: "Meso Therapy", price: "2.500", unit: "k", desc: "Cấy tinh chất nuôi dưỡng da từ sâu bên trong." },
+    { name: "Siêu Cấp Ẩm", price: "650", unit: "k", desc: "Hồi sinh làn da khô ráp, thiếu sức sống." }
   ];
 
   return (
@@ -73,9 +119,7 @@ const App = () => {
       <nav className="fixed top-2 md:top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 font-medium">
         <div className="bg-white/90 backdrop-blur-md border border-white/40 shadow-sm rounded-full px-4 md:px-6 py-2 md:py-3 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="bg-[#D4AF37] p-1.5 rounded-lg shrink-0">
-              <Home className="text-white w-4 h-4 md:w-5 md:h-5" />
-            </div>
+            <img src={IMAGES.logo} alt="Hương House Spa" className="h-8 md:h-10 w-auto object-contain" />
             <span className="text-sm md:text-xl font-bold tracking-tighter uppercase text-[#2D2D2D]" style={{ fontFamily: '"Playfair Display", serif' }}>
               HƯƠNG <span className="text-[#D4AF37]">HOUSE</span> SPA
             </span>
@@ -142,7 +186,7 @@ const App = () => {
           >
             <div className="inline-flex items-center gap-2 bg-[#D4AF37]/10 text-[#D4AF37] px-4 py-2 rounded-full mb-6">
               <Sparkles size={16} />
-              <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">Sạch mụn - Sáng thâm - Tự tin tỏa sáng</span>
+              <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">BẢNG GIÁ NIÊM YẾT - DỊCH VỤ CHUYÊN NGHIỆP</span>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-6" style={{ fontFamily: '"Playfair Display", serif' }}>
               Trị Mụn Tận Gốc <br />
@@ -154,17 +198,8 @@ const App = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <button className="bg-[#2D2D2D] text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base shadow-2xl hover:bg-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide">
-                ĐẶT LỊCH LẤY NHÂN MỤN <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                XEM BẢNG GIÁ CHI TIẾT <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <a href="#results" className="bg-white text-[#2D2D2D] border border-gray-200 px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base hover:border-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide shadow-sm">
-                XEM KẾT QUẢ THẬT
-              </a>
-            </div>
-
-            <div className="mt-10 flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-bold uppercase tracking-widest opacity-60">
-              <div className="flex items-center gap-2"><CheckCircle2 size={14} className="text-green-600" /> Không sưng đỏ</div>
-              <div className="flex items-center gap-2"><CheckCircle2 size={14} className="text-green-600" /> Dụng cụ riêng biệt</div>
-              <div className="flex items-center gap-2"><CheckCircle2 size={14} className="text-green-600" /> Hiệu quả nhanh</div>
             </div>
           </motion.div>
         </div>
@@ -178,13 +213,9 @@ const App = () => {
               <div className="rounded-[3rem] overflow-hidden shadow-2xl">
                 <img src={IMAGES.acne_treatment} alt="Lấy nhân mụn bằng tay" className="w-full h-[500px] object-cover" />
               </div>
-              <div className="absolute -bottom-10 -right-10 bg-white p-8 rounded-[2rem] shadow-xl max-w-xs hidden md:block border border-gray-50">
-                <p className="text-[#D4AF37] text-3xl font-bold mb-2 italic" style={{ fontFamily: '"Playfair Display", serif' }}>100%</p>
-                <p className="text-xs font-bold uppercase tracking-widest leading-relaxed">Khách hàng hài lòng với kỹ thuật lấy mụn không thâm.</p>
-              </div>
             </div>
             <div>
-              <span className="text-[#D4AF37] font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Dịch vụ nổi bật nhất</span>
+              <span className="text-[#D4AF37] font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Dịch vụ cốt lõi</span>
               <h2 className="text-3xl md:text-5xl font-bold mb-8 leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
                 Kỹ Thuật Lấy Nhân Mụn <br /><span className="italic text-[#D4AF37] font-normal">Bằng Tay Chuyên Nghiệp</span>
               </h2>
@@ -205,115 +236,84 @@ const App = () => {
                   </div>
                 ))}
               </div>
-              <button className="mt-10 bg-[#2D2D2D] text-white px-10 py-5 rounded-full font-bold text-sm tracking-widest hover:bg-[#D4AF37] transition-all shadow-lg uppercase">
-                Đặt lịch soi da miễn phí
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TREATMENT PROCESS */}
+      <section id="process" className="py-20 md:py-32 bg-[#FAF7F2]">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
+            <span className="text-[#D4AF37] font-bold tracking-[0.4em] uppercase text-[10px] mb-2 block">Tận tâm trong từng bước</span>
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>Quy Trình Trị Mụn <br /><span className="italic text-[#D4AF37] font-normal">Chuẩn Y Khoa</span></h2>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { step: "01", title: "Thăm Khám", desc: "Soi da và phân tích tình trạng mụn để đưa ra phác đồ điều trị riêng biệt." },
+              { step: "02", title: "Làm Sạch", desc: "Tẩy trang, rửa mặt và tẩy tế bào chết bằng dược mỹ phẩm dịu nhẹ." },
+              { step: "03", title: "Xử Lý Mụn", desc: "Kỹ thuật lấy nhân mụn bằng tay khéo léo, làm sạch sâu ổ viêm không để lại thâm." },
+              { step: "04", title: "Phục Hồi", desc: "Điện di tinh chất hoặc đắp mặt nạ làm dịu, giúp da phục hồi ngay tức thì." }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-50 relative overflow-hidden group">
+                <span className="absolute -top-4 -right-4 text-8xl font-bold text-gray-50 group-hover:text-[#D4AF37]/5 transition-colors z-0 select-none">{item.step}</span>
+                <div className="relative z-10">
+                  <h4 className="font-bold text-sm uppercase tracking-widest mb-4 flex items-center gap-3">
+                    <CheckCircle2 size={16} className="text-[#D4AF37]" /> {item.title}
+                  </h4>
+                  <p className="text-gray-500 text-xs leading-relaxed font-light">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PRICING - UPDATED FROM IMAGE */}
+      <section id="pricing" className="py-20 md:py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto bg-white rounded-[3rem] p-8 md:p-16 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.08)] border border-gray-50">
+            <div className="text-center mb-16">
+              <span className="text-[#D4AF37] font-bold tracking-[0.4em] uppercase text-[10px] mb-2 block">Menu Dịch Vụ</span>
+              <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: '"Playfair Display", serif' }}>Bảng Giá Tại Hương House</h2>
+              <div className="w-20 h-1 bg-[#D4AF37] mx-auto rounded-full mt-4" />
+            </div>
+            
+            <div className="space-y-1">
+              {pricingData.map((item, i) => (
+                <div key={i} className="flex justify-between items-center gap-4 py-6 border-b border-gray-50 group hover:px-4 transition-all hover:bg-[#FAF7F2] rounded-2xl">
+                  <div>
+                    <h4 className="font-bold text-sm md:text-xl mb-1 group-hover:text-[#D4AF37] transition-colors tracking-tight uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>{item.name}</h4>
+                    <p className="text-gray-400 text-[10px] md:text-xs font-light italic">{item.desc}</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="font-bold text-[#2D2D2D] text-lg md:text-2xl">{item.price}</span>
+                    <span className="text-[#D4AF37] font-bold text-sm md:text-base ml-1">{item.unit}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-16 flex flex-col items-center">
+              <p className="text-gray-400 text-[10px] uppercase tracking-widest mb-8 text-center italic">Giá trên đã bao gồm toàn bộ liệu trình, cam kết không phát sinh chi phí.</p>
+              <button className="bg-[#2D2D2D] text-white px-10 py-5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-all shadow-xl">
+                NHẬN TƯ VẤN PHÁC ĐỒ MIỄN PHÍ
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SERVICES GROUP: ĐIỀU TRỊ DA */}
-      <section id="treatments" className="py-20 md:py-32 bg-[#FAF7F2]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: '"Playfair Display", serif' }}>Phác Đồ Điều Trị Chuyên Sâu</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto text-sm md:text-base font-light">Ứng dụng công nghệ và hoạt chất hiện đại giúp phục hồi và tái tạo làn da từ bên trong.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Peel Da */}
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all group">
-              <div className="h-48 overflow-hidden rounded-2xl mb-6">
-                <img src={IMAGES.peel_skin} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Peel mụn thâm" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 uppercase tracking-wider">Peel Mụn - Thâm</h3>
-              <p className="text-gray-500 text-sm leading-relaxed mb-6 font-light">Sử dụng các hoạt chất chuyên biệt giúp gom cồi mụn nhanh, mờ thâm nám và đồng đều màu da.</p>
-              <ul className="space-y-2 mb-8">
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Giảm mụn viêm</li>
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Mờ thâm cấp tốc</li>
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Tái tạo nền da</li>
-              </ul>
-              <button className="w-full py-4 border border-gray-100 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#D4AF37] hover:text-white transition-all">Tìm hiểu thêm</button>
-            </div>
-
-            {/* Meso */}
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all group">
-              <div className="h-48 overflow-hidden rounded-2xl mb-6">
-                <img src={IMAGES.meso} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Meso therapy" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 uppercase tracking-wider">Meso Căng Bóng</h3>
-              <p className="text-gray-500 text-sm leading-relaxed mb-6 font-light">Đưa trực tiếp dưỡng chất vào sâu trong da, giúp cấp ẩm tức thì và phục hồi hàng rào bảo vệ da.</p>
-              <ul className="space-y-2 mb-8">
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Cấp ẩm chuyên sâu</li>
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Phục hồi da yếu</li>
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Da sáng khỏe</li>
-              </ul>
-              <button className="w-full py-4 border border-gray-100 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#D4AF37] hover:text-white transition-all">Tìm hiểu thêm</button>
-            </div>
-
-            {/* Triệt Lông */}
-            <div id="laser" className="bg-white p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all group">
-              <div className="h-48 overflow-hidden rounded-2xl mb-6">
-                <img src={IMAGES.hair_removal} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Triệt lông laser" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 uppercase tracking-wider">Triệt Lông Diode</h3>
-              <p className="text-gray-500 text-sm leading-relaxed mb-6 font-light">Công nghệ Laser đầu lạnh, không đau rát, triệt sạch gốc nang lông và làm sáng vùng da dưới cánh tay.</p>
-              <ul className="space-y-2 mb-8">
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Không đau - Không rát</li>
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Hiệu quả lâu dài</li>
-                <li className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide opacity-70"><CheckCircle2 size={14} className="text-[#D4AF37]" /> Se khít lỗ chân lông</li>
-              </ul>
-              <button className="w-full py-4 border border-gray-100 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#D4AF37] hover:text-white transition-all">Tìm hiểu thêm</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* UPSELL: HIFU TRẺ HÓA */}
-      <section id="hifu" className="py-20 md:py-32 bg-[#2D2D2D] text-white relative overflow-hidden">
-        <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
-          <div>
-            <div className="inline-block bg-[#D4AF37] text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6">Dịch vụ cao cấp</div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-8 leading-tight" style={{ fontFamily: '"Playfair Display", serif' }}>
-              Nâng Cơ Trẻ Hóa <br />
-              <span className="italic text-[#D4AF37] font-normal">Công Nghệ HIFU</span>
-            </h2>
-            <p className="text-gray-400 text-sm md:text-lg mb-10 leading-relaxed font-light">
-              Giải pháp vàng cho làn da chớm lão hóa. HIFU giúp nâng cơ không xâm lấn, xóa mờ nếp nhăn và tạo hình khuôn mặt V-line thon gọn mà không cần nghỉ dưỡng.
-            </p>
-            <div className="grid grid-cols-2 gap-6 mb-10">
-              <div className="flex items-start gap-3">
-                <Zap className="text-[#D4AF37] mt-1" size={18} />
-                <p className="text-xs font-bold uppercase tracking-widest">Nâng cơ <br/>tức thì</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="text-[#D4AF37] mt-1" size={18} />
-                <p className="text-xs font-bold uppercase tracking-widest">Săn chắc <br/>từ bên trong</p>
-              </div>
-            </div>
-            <button className="bg-[#D4AF37] text-white px-10 py-5 rounded-full font-bold text-sm tracking-widest hover:bg-white hover:text-[#2D2D2D] transition-all">
-              ĐẶT LỊCH TRẢI NGHIỆM
-            </button>
-          </div>
-          <div className="relative">
-            <div className="rounded-[3rem] overflow-hidden aspect-[4/5] md:aspect-auto">
-              <img src={IMAGES.hifu} className="w-full h-full md:h-[600px] object-cover opacity-80" alt="HIFU Treatment" />
-            </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-white/20 rounded-full animate-ping pointer-events-none" />
-          </div>
-        </div>
-      </section>
-
-      {/* RESULTS: BEFORE/AFTER */}
-      <section id="results" className="py-20 md:py-32 bg-white">
+      {/* RESULTS: BEFORE/AFTER SLIDER */}
+      <section id="results" className="py-20 md:py-32 bg-[#FAF7F2]">
         <div className="container mx-auto px-6 mb-16 text-center">
-            <span className="text-[#D4AF37] font-bold tracking-[0.4em] uppercase text-[10px] mb-2 block">Nhân chứng sống</span>
+            <span className="text-[#D4AF37] font-bold tracking-[0.4em] uppercase text-[10px] mb-2 block">Chứng thực hiệu quả</span>
             <h2 className="text-3xl md:text-5xl font-bold italic" style={{ fontFamily: '"Playfair Display", serif' }}>Kết Quả Thật - Khách Hàng Thật</h2>
         </div>
 
         <div 
-          className="relative max-w-4xl mx-auto h-[400px] md:h-[600px] rounded-[3rem] overflow-hidden cursor-ew-resize border-8 border-[#FAF7F2] shadow-2xl"
+          className="relative max-w-4xl mx-auto h-[400px] md:h-[600px] rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-ew-resize border-8 border-white shadow-2xl select-none"
           ref={sliderRef}
           onMouseMove={handleMove}
           onTouchMove={handleMove}
@@ -333,22 +333,51 @@ const App = () => {
             <div className="absolute top-6 left-6 bg-red-500/90 text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">Trước: Mụn & Thâm</div>
           </div>
 
-          <div className="absolute inset-y-0 w-1 bg-white z-20" style={{ left: `${sliderPos}%` }}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center shadow-2xl text-[#2D2D2D]">
-              <div className="flex gap-1.5 items-center">
-                <div className="w-1 h-4 md:h-6 bg-[#D4AF37] rounded-full" />
-                <div className="w-1 h-4 md:h-6 bg-[#D4AF37] rounded-full" />
+          <div className="absolute inset-y-0 w-1 bg-white z-10 shadow-[0_0_10px_rgba(0,0,0,0.3)]" style={{ left: `${sliderPos}%` }}>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center shadow-xl text-[#2D2D2D]">
+              <div className="flex gap-1 items-center">
+                <div className="w-1 h-4 md:h-5 bg-[#D4AF37] rounded-full" />
+                <div className="w-1 h-4 md:h-5 bg-[#D4AF37] rounded-full" />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-16 flex justify-center gap-4 md:gap-8 overflow-x-auto pb-4 px-6 no-scrollbar">
-           {[1,2,3,4,5].map(i => (
-             <div key={i} className="min-w-[150px] md:min-w-[200px] h-[150px] md:h-[200px] bg-gray-100 rounded-3xl overflow-hidden shadow-sm">
-                <img src={`https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=60&w=300&rand=${i}`} className="w-full h-full object-cover" alt="Khách hàng" />
-             </div>
-           ))}
+        <div className="container mx-auto px-6 mt-16 md:mt-24">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {IMAGES.gallery.map((img, index) => (
+              <motion.div 
+                key={index}
+                whileHover={{ y: -10 }}
+                className="group relative aspect-square rounded-2xl md:rounded-[2rem] overflow-hidden shadow-lg bg-white"
+              >
+                <img src={img} alt={`Kết quả khách hàng ${index + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-20 md:py-32 bg-white">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold italic" style={{ fontFamily: '"Playfair Display", serif' }}>Câu Hỏi Thường Gặp</h2>
+          </div>
+          <div className="space-y-2">
+            <FAQItem 
+              question="Nặn mụn cơ bản tại Hương House khác gì tự nặn ở nhà?" 
+              answer="Tại Hương House, chúng tôi sử dụng kỹ thuật lấy nhân mụn bằng tay chuẩn y khoa, lấy sạch tận gốc chân mụn mà không gây dập nát mô da, kết hợp tiệt trùng bằng ánh sáng Bio-Light giúp ngăn mụn tái phát và không để lại sẹo."
+            />
+            <FAQItem 
+              question="Meso Therapy có phù hợp với da đang bị mụn không?" 
+              answer="Meso Therapy rất tốt cho việc phục hồi da sau mụn. Tuy nhiên, nếu da đang có mụn viêm nặng, chúng tôi sẽ ưu tiên điều trị sạch mụn trước bằng các liệu trình như Nặn mụn 4F hoặc Peel Châu Âu, sau đó mới tiến hành Meso để phục hồi và làm sáng da."
+            />
+            <FAQItem 
+              question="Peel da bí đỏ (Pumpkin Peel) có làm bong tróc da nhiều không?" 
+              answer="Pumpkin Peel là phương pháp thay da sinh học nhẹ nhàng, chủ yếu loại bỏ tế bào sừng chết và làm sáng da. Da chỉ hơi khô nhẹ trong 1-2 ngày đầu và không bị bong tróc từng mảng như các loại peel nồng độ cao khác."
+            />
+          </div>
         </div>
       </section>
 
@@ -356,28 +385,20 @@ const App = () => {
       <section className="py-20 md:py-32 bg-[#FAF7F2]">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-16" style={{ fontFamily: '"Playfair Display", serif' }}>Cam Kết Vàng Tại Hương House</h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            <div>
-              <div className="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                <Flame className="text-[#D4AF37]" size={32} />
+          <div className="grid md:grid-cols-3 gap-12 text-center">
+            {[
+              { icon: <Flame size={32} />, title: "Tận tâm xử lý", desc: "Kỹ thuật tay nghề cao đảm bảo không để lại thâm sẹo." },
+              { icon: <ShieldCheck size={32} />, title: "An toàn tuyệt đối", desc: "Dụng cụ dùng một lần và dược mỹ phẩm chính hãng." },
+              { icon: <Infinity size={32} />, title: "Hiệu quả rõ rệt", desc: "Cam kết sự thay đổi của làn da sau mỗi liệu trình." }
+            ].map((item, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <div className="bg-white w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-md text-[#D4AF37]">
+                  {item.icon}
+                </div>
+                <h4 className="font-bold uppercase tracking-widest mb-4 text-sm">{item.title}</h4>
+                <p className="text-gray-500 text-xs font-light leading-relaxed max-w-[250px]">{item.desc}</p>
               </div>
-              <h4 className="font-bold uppercase tracking-widest mb-4">Không thâm sau lấy mụn</h4>
-              <p className="text-gray-500 text-sm font-light leading-relaxed">Quy trình xử lý nhân mụn khép kín và kỹ thuật tay nghề cao đảm bảo không để lại thâm sẹo.</p>
-            </div>
-            <div>
-              <div className="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                <ShieldCheck className="text-[#D4AF37]" size={32} />
-              </div>
-              <h4 className="font-bold uppercase tracking-widest mb-4">An toàn tuyệt đối</h4>
-              <p className="text-gray-500 text-sm font-light leading-relaxed">Sử dụng dụng cụ dùng một lần và dược mỹ phẩm chính hãng có chứng nhận y khoa.</p>
-            </div>
-            <div>
-              <div className="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                <Infinity className="text-[#D4AF37]" size={32} />
-              </div>
-              <h4 className="font-bold uppercase tracking-widest mb-4">Hiệu quả rõ rệt</h4>
-              <p className="text-gray-500 text-sm font-light leading-relaxed">Cam kết sự thay đổi của làn da bằng văn bản sau mỗi liệu trình điều trị.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -390,14 +411,13 @@ const App = () => {
              <span className="text-[#D4AF37] font-normal italic">Thay Đổi Làn Da</span>
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-             <button className="w-full sm:w-auto bg-[#2D2D2D] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-[#D4AF37] transition-all shadow-2xl tracking-wider">
+             <button className="w-full sm:w-auto bg-[#2D2D2D] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-[#D4AF37] transition-all shadow-2xl tracking-wider uppercase">
                ĐẶT LỊCH NGAY
              </button>
-             <a href={socialLinks[2].url} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-[#0068FF] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-blue-600 transition-all shadow-2xl flex items-center justify-center gap-3">
+             <a href={socialLinks[2].url} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-[#0068FF] text-white px-12 md:px-16 py-6 md:py-7 rounded-full font-bold text-lg md:text-xl hover:bg-blue-600 transition-all shadow-2xl flex items-center justify-center gap-3 uppercase">
                <MessageCircle size={24} /> NHẮN ZALO
              </a>
           </div>
-          <p className="mt-10 text-xs md:text-sm text-gray-400 font-bold uppercase tracking-[0.4em]">Số lượng ưu đãi có hạn mỗi ngày</p>
         </div>
       </section>
 
@@ -406,14 +426,9 @@ const App = () => {
         <div className="container mx-auto px-6 grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-              <Home className="text-[#D4AF37] w-6 h-6" />
+              <img src={IMAGES.logo} alt="Hương House Spa" className="h-10 w-auto object-contain" />
               <span className="text-2xl font-bold tracking-tighter uppercase" style={{ fontFamily: '"Playfair Display", serif' }}>HƯƠNG <span className="text-[#D4AF37]">HOUSE</span> SPA</span>
             </div>
-            <p className="text-gray-400 text-sm max-w-sm mb-8 leading-relaxed font-light italic">
-              "Làn da đẹp không tự nhiên mà có, nó đến từ sự chăm sóc tận tâm tại Hương House."
-            </p>
-            
-            {/* --- CẬP NHẬT PHẦN MẠNG XÃ HỘI --- */}
             <div className="flex gap-4">
                {socialLinks.map(social => (
                  <a 
@@ -429,24 +444,19 @@ const App = () => {
             </div>
           </div>
           <div>
-            <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6 text-[#D4AF37]">Dịch vụ</h4>
+            <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6 text-[#D4AF37]">Dịch vụ hot</h4>
             <ul className="space-y-3 text-xs text-gray-500 font-medium">
-              <li>Lấy nhân mụn bằng tay</li>
-              <li>Peel mụn - thâm</li>
-              <li>Meso phục hồi</li>
-              <li>Trẻ hóa HIFU</li>
-              <li>Triệt lông Laser</li>
+              <li>Nặn mụn Oxygen</li>
+              <li>Peel Châu Âu</li>
+              <li>Meso Therapy</li>
+              <li>Siêu cấp ẩm</li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6 text-[#D4AF37]">Liên hệ</h4>
-            <p className="text-xs text-gray-500 leading-7 font-medium mb-4">
-              123 Đường Sắc Đẹp, Quận 1, TP. HCM<br />
-              <span className="text-[#2D2D2D] font-bold">Hotline: 094 305 91 67</span>
-            </p>
             <p className="text-xs text-gray-500 leading-7 font-medium">
-              Mở cửa: 09:00 - 20:00<br />
-              (Tất cả các ngày trong tuần)
+              123 Đường Sắc Đẹp, Quận 1, TP. HCM<br />
+              <span className="text-[#2D2D2D] font-bold">Hotline: 094 305 9167</span>
             </p>
           </div>
         </div>
@@ -455,7 +465,7 @@ const App = () => {
       {/* STICKY MOBILE ACTIONS */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[60] bg-white/95 backdrop-blur-xl border-t border-gray-100 p-4 flex gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
         <button className="flex-[3] bg-[#D4AF37] text-white py-4 rounded-2xl font-bold shadow-lg text-[10px] uppercase tracking-[0.2em]">
-          Lấy Mụn Ngay
+          Tư vấn phác đồ
         </button>
         <a href={socialLinks[2].url} target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#0068FF] text-white rounded-2xl flex items-center justify-center shadow-lg">
           <MessageCircle size={24} />
