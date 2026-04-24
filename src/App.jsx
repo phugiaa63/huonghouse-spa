@@ -119,7 +119,68 @@ const App = () => {
           </div>
         </div>
       </nav>
+{/* MOBILE MENU */}
+<AnimatePresence>
+  {isMenuOpen && (
+    <>
+      {/* Overlay */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+        onClick={() => setIsMenuOpen(false)}
+      />
 
+      {/* Menu */}
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "spring", stiffness: 260, damping: 25 }}
+        className="fixed top-0 right-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl p-6 flex flex-col gap-6 lg:hidden"
+      >
+        {/* Close button */}
+        <div className="flex justify-end">
+          <button onClick={() => setIsMenuOpen(false)}>
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Menu links */}
+        <div className="flex flex-col gap-4 text-sm font-bold uppercase tracking-widest">
+          <a href="#acne" onClick={() => setIsMenuOpen(false)}>Trị Mụn</a>
+          <a href="#tech" onClick={() => setIsMenuOpen(false)}>Công Nghệ</a>
+          <a href="#pricing" onClick={() => setIsMenuOpen(false)}>Bảng Giá</a>
+          <a href="#results" onClick={() => setIsMenuOpen(false)}>Kết Quả</a>
+        </div>
+
+        {/* CTA */}
+        <a
+          href="https://zalo.me/0943059167"
+          target="_blank"
+          className="mt-6 bg-[#D4AF37] text-white py-4 rounded-2xl font-bold text-center uppercase tracking-widest"
+        >
+          Tư vấn ngay
+        </a>
+
+        {/* Social */}
+        <div className="mt-auto flex gap-3">
+          {socialLinks.map((social) => (
+            <a
+              key={social.name}
+              href={social.url}
+              target="_blank"
+              className="text-xs border px-3 py-2 rounded-full"
+            >
+              {social.name}
+            </a>
+          ))}
+        </div>
+      </motion.div>
+    </>
+  )}
+</AnimatePresence>
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
