@@ -52,31 +52,31 @@ celluma_gallery: [
     {
       id: 1,
       url: "/images/bf1.jpg",
-      title: "Da căng bóng sau Meso",
+      title: "HIFU làm săn nọng cằm",
       size: "large",
     },
     {
       id: 2,
       url: "/images/bf2.jpg",
-      title: "Trẻ hóa da tầng sâu",
+      title: "Tạo hình cằm tự nhiên",
       size: "small",
     },
     {
       id: 3,
       url: "/images/bf3.jpg",
-      title: "Sạch mụn",
+      title: "Cân chỉnh cằm lệch",
       size: "small",
     },
     {
       id: 4,
       url: "/images/bf4.jpg",
-      title: "Phục hồi cấu trúc da",
+      title: "Peel nách",
       size: "small",
     },
     {
       id: 5,
       url: "/images/bf5.jpg",
-      title: "Nâng cơ V-Line",
+      title: "Làm đầy môi tự nhiên",
       size: "small",
     },
   ],
@@ -275,13 +275,13 @@ const App = () => {
               Kết hợp các hoạt chất hỗ trợ trị mụn - thâm - sạch sâu thoáng lỗ chân lông
 </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <button className="bg-[#2D2D2D] text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base shadow-2xl hover:bg-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide">
+              <a href="#pricing" className="bg-[#2D2D2D] text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-sm md:text-base shadow-2xl hover:bg-[#D4AF37] transition-all flex items-center justify-center gap-2 group tracking-wide no-underline">
                 XEM BẢNG GIÁ CHI TIẾT{" "}
                 <ChevronRight
                   size={18}
                   className="group-hover:translate-x-1 transition-transform"
                 />
-              </button>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -575,31 +575,32 @@ const App = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[250px]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {IMAGES.results_images.map((item) => (
               <motion.div
                 key={item.id}
                 whileHover={{ scale: 0.98 }}
                 onClick={() => setSelectedImg(item)}
-                className={`relative rounded-[2rem] overflow-hidden group cursor-pointer shadow-lg
+                className={`flex flex-col group cursor-pointer
                    ${item.size === "large" ? "col-span-2 row-span-2" : "col-span-1 row-span-1"}
                  `}
               >
-                <img
-                  src={item.url}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="bg-white/90 p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                    <Maximize2 size={20} className="text-[#D4AF37]" />
+                <div className="relative rounded-[2rem] overflow-hidden shadow-lg flex-1">
+                  <img
+                    src={item.url}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    style={{ minHeight: item.size === "large" ? "400px" : "200px" }}
+                  />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-white/90 p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                      <Maximize2 size={20} className="text-[#D4AF37]" />
+                    </div>
                   </div>
                 </div>
-                <div className="absolute bottom-6 left-6 right-6 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
-                  <p className="text-white text-[10px] font-bold uppercase tracking-widest drop-shadow-md bg-black/20 p-2 rounded-lg inline-block">
-                    {item.title}
-                  </p>
-                </div>
+                <p className="mt-2 text-center text-[10px] md:text-xs font-semibold uppercase tracking-wider text-[#2D2D2D] group-hover:text-[#D4AF37] transition-colors line-clamp-1">
+                  {item.title}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -709,13 +710,19 @@ const App = () => {
     Hotline:
   </span>
   <br/>
-  <span className="text-[#2D2D2D] font-bold">
-    094 305 91 67
-  </span>
-  <br/>
-  <span className="text-[#2D2D2D] font-bold">
-    0965 610 552
-  </span>
+  <a 
+  href="tel:0943059167"
+  className="text-[#2D2D2D] font-bold block hover:text-[#D4AF37] transition-colors"
+>
+   094 305 91 67
+</a>
+
+<a 
+  href="tel:0965610552"
+  className="text-[#2D2D2D] font-bold block hover:text-[#D4AF37] transition-colors"
+>
+   0965 610 552
+</a>
 </p>
           </div>
         </div>
