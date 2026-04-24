@@ -20,13 +20,13 @@ const socialLinks = [
 ];
 // --- HÌNH ẢNH CAO CẤP & THỰC TẾ ---
 const IMAGES = {
-  logo: "/public/images/lgHHS.png",
+  logo: "/public/lgHHS.png",
   hero: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1600",
   acne_treatment: "/images/acne_treatment.jpg",
   celluma_real: "/images/celluma.jpg",
   
   hifu_gallery: [
-    "/images/hifu1.jpg",
+    "/images/hifu1.jpg",  
     "/images/hifu2.jpg",
     "/images/hifu3.jpg",
     "/images/hifu4.jpg"
