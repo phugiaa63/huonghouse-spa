@@ -20,9 +20,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 const IMAGES = {
   hero: "https://images.unsplash.com/photo-1544161515-4ae6ce6db874?auto=format&fit=crop&q=80&w=1600",
   treatment: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800",
-  before: "../public/images/truoc1.jpg",
-  after: "../public/images/sau1.jpg",
-  spa_interior: "../public/images/hinh1.jpg"
+  before: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&q=80&w=600",
+  after: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=600",
+  spa_interior: "https://images.unsplash.com/photo-1519415510236-85592ada7b08?auto=format&fit=crop&q=80&w=1200"
 };
 
 const App = () => {
