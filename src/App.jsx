@@ -20,7 +20,7 @@ const socialLinks = [
 ];
 // --- HÌNH ẢNH CAO CẤP & THỰC TẾ ---
 const IMAGES = {
-  logo: "/public/lgHHS.png",
+  logo: "/images/lgHHS.png",
   hero: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1600",
   acne_treatment: "/images/acne_treatment.jpg",
   celluma_real: "/images/celluma.jpg",
@@ -334,7 +334,9 @@ const App = () => {
 
           <div className="mt-16 text-center">
              <button className="bg-[#2D2D2D] text-white px-10 py-5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-[#D4AF37] transition-all shadow-xl">
+              <a href="https://www.facebook.com/profile.php?id=100063713103271" target="_blank" rel="noopener noreferrer">
                XEM THÊM TRÊN FACEBOOK
+              </a>
              </button>
           </div>
         </div>
