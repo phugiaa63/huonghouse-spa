@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   ChevronRight,
+  ChevronDown,
   Sparkles,
   MessageCircle,
   Menu,
@@ -86,6 +87,7 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeHifuImg, setActiveHifuImg] = useState(0);
   const [selectedImg, setSelectedImg] = useState(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -308,6 +310,7 @@ const App = () => {
                   <img
                     key={i}
                     src={img}
+                    alt={`Hình ảnh điều trị mụn thực tế ${i + 1} tại Hương House Spa`}
                     className="w-full h-24 object-cover rounded-xl"
                   />
                 ))}
@@ -396,24 +399,29 @@ const App = () => {
               className="flex flex-col gap-8"
             >
               <div className="relative group">
-                <div className="aspect-[4/3] rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100">
+                <div className="relative aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl bg-gray-100">
                   <AnimatePresence mode="wait">
                     <motion.img
-  key={activeHifuImg}
-  drag="x"
-  dragConstraints={{ left: 0, right: 0 }}
-  onDragEnd={(e, info) => {
-    if (info.offset.x < -50) {
-      setActiveHifuImg((prev) => (prev + 1) % IMAGES.hifu_gallery.length);
-    } else if (info.offset.x > 50) {
-      setActiveHifuImg((prev) =>
-        prev === 0 ? IMAGES.hifu_gallery.length - 1 : prev - 1
-      );
-    }
-  }}
-  src={IMAGES.hifu_gallery[activeHifuImg]}
-  className="w-full h-full object-cover cursor-grab active:cursor-grabbing"
-/>
+                      key={activeHifuImg}
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      onDragEnd={(e, info) => {
+                        if (info.offset.x < -50) {
+                          setActiveHifuImg((prev) => (prev + 1) % IMAGES.hifu_gallery.length);
+                        } else if (info.offset.x > 50) {
+                          setActiveHifuImg((prev) =>
+                            prev === 0 ? IMAGES.hifu_gallery.length - 1 : prev - 1
+                          );
+                        }
+                      }}
+                      src={IMAGES.hifu_gallery[activeHifuImg]}
+                      alt={`Công nghệ nâng cơ trẻ hóa da HIFU Ultraformer III - hình ảnh thực tế ${activeHifuImg + 1}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute inset-0 w-full h-full object-cover cursor-grab active:cursor-grabbing"
+                    />
                   </AnimatePresence>
                 </div>
                 <div className="absolute inset-x-0 bottom-6 flex justify-center gap-2">
@@ -478,7 +486,7 @@ const App = () => {
                 </div>
                 <div className="grid grid-cols-3 gap-3 mt-6">
                   {IMAGES.celluma_gallery.map((img, i) => (
-                    <img key={i} src={img} className="rounded-xl h-28 object-cover" />
+                    <img key={i} src={img} alt={`Hình ảnh liệu trình trị liệu mụn bằng ánh sáng Celluma ${i + 1}`} className="rounded-xl h-28 object-cover" />
                   ))}
                 </div>
               </div>
@@ -614,6 +622,82 @@ const App = () => {
 >
   XEM THÊM TRÊN FACEBOOK
 </a>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ SECTION (Tối ưu tỷ lệ văn bản/HTML) */}
+      <section className="py-20 md:py-32 bg-white border-t border-gray-50">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <div className="text-center mb-16">
+            <span className="text-[#D4AF37] font-bold tracking-[0.4em] uppercase text-[10px] mb-2 block">
+              Giải đáp thắc mắc
+            </span>
+            <h2
+              className="text-3xl md:text-5xl font-bold italic"
+              style={{ fontFamily: '"Playfair Display", serif' }}
+            >
+              Câu Hỏi Thường Gặp
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: "Quy trình điều trị mụn tại Hương House Spa bao gồm những bước nào?",
+                a: "Quy trình điều trị mụn chuyên sâu tại Hương House Spa được thiết kế chuẩn y khoa gồm 14 bước nghiêm ngặt: Tẩy trang làm sạch, rửa mặt dịu nhẹ, tẩy tế bào chết enzyme, xông hơi giãn nở lỗ chân lông, hút bã nhờn mụn cám, sát khuẩn bề mặt da, tiến hành lấy nhân mụn bằng tay khéo léo giúp hạn chế đau và tổn thương da tối đa, đi điện tím diệt khuẩn, đắp mặt nạ thảo dược làm dịu giảm sưng đỏ, chiếu ánh sáng sinh học Celluma diệt khuẩn mụn tầng sâu, thoa dưỡng chất phục hồi da và kem chống nắng bảo vệ da toàn diện."
+              },
+              {
+                q: "Kỹ thuật lấy nhân mụn bằng tay tại Hương House Spa có ưu điểm gì so với phương pháp thông thường?",
+                a: "Chúng tôi tự hào áp dụng kỹ thuật lấy nhân mụn bằng tay chuyên nghiệp, tỉ mỉ. Khác với việc tự nặn mụn hoặc dùng cây nặn mụn kim loại dễ gây rách mô tế bào, kỹ thuật thủ công giúp kiểm soát lực tác động chính xác lên từng nốt mụn. Phương pháp này giúp lấy sạch hoàn toàn chân cồi mụn mà không gây dập nát các mô da xung quanh, giảm thiểu hơn 90% nguy cơ để lại sẹo rỗ, vết thâm sâu và hạn chế tối đa việc mụn tái phát trở lại tại cùng vị trí."
+              },
+              {
+                q: "Công nghệ nâng cơ HIFU Ultraformer III hoạt động như thế nào và duy trì được bao lâu?",
+                a: "Công nghệ HIFU Ultraformer III sử dụng sóng siêu âm hội tụ cường độ cao tác động trực tiếp vào lớp cơ nông SMAS ở độ sâu 3.0mm đến 4.5mm dưới da. Nhiệt lượng sinh ra kích thích sản sinh collagen và elastin mới mạnh mẽ, giúp nâng đỡ vùng da chảy xệ, thon gọn viền hàm và xóa mờ nếp nhăn hiệu quả. Hiệu quả trẻ hóa da có thể cảm nhận ngay lập tức sau liệu trình đầu tiên và duy trì kéo dài từ 1 đến 2 năm tùy thuộc vào cơ địa và chế độ chăm sóc da của từng khách hàng."
+              },
+              {
+                q: "Công nghệ ánh sáng trị liệu Celluma mang lại lợi ích gì cho làn da mụn và nhạy cảm?",
+                a: "Máy chiếu ánh sáng sinh học Celluma được chứng nhận bởi FDA Hoa Kỳ, sử dụng các bước sóng ánh sáng thông minh để trị liệu da. Trong đó, ánh sáng xanh lam (Blue light) có khả năng xuyên sâu tiêu diệt vi khuẩn P.acnes gây mụn, giảm sưng viêm nhanh chóng. Ánh sáng đỏ (Red light) giúp kích thích tuần hoàn máu, đẩy nhanh quá trình phục hồi các tổn thương da sau nặn mụn, hỗ trợ mờ thâm và tăng sinh collagen giúp da săn chắc, sáng khỏe hơn."
+              },
+              {
+                q: "Tại sao tôi nên thực hiện peel da hóa học (Chemical Peel) tại spa thay vì tự làm tại nhà?",
+                a: "Peel da hóa học sử dụng các hoạt chất axit lành tính như AHA, BHA, hay Retinol để loại bỏ tế bào sừng già cỗi, thúc đẩy tái tạo tế bào mới. Tại Hương House Spa, các chuyên viên giàu kinh nghiệm sẽ trực tiếp thăm khám và đánh giá tình trạng da để lựa chọn đúng nồng độ hoạt chất phù hợp. Quá trình peel da được kiểm soát thời gian nghiêm ngặt kết hợp các bước trung hòa da và làm dịu ngay lập tức, đảm bảo an toàn tuyệt đối, tránh tình trạng bỏng hóa chất, tăng sắc tố hoặc làm mỏng yếu hàng rào bảo vệ da vốn rất dễ xảy ra khi tự peel da tại nhà."
+              }
+            ].map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div
+                  key={index}
+                  className="border border-[#FAF7F2] rounded-3xl overflow-hidden bg-[#FAF7F2]/50 hover:bg-[#FAF7F2] transition-colors duration-300"
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full px-6 py-5 text-left flex justify-between items-center gap-4 text-[#2D2D2D]"
+                  >
+                    <span className="font-bold text-sm md:text-base tracking-wide leading-snug">
+                      {faq.q}
+                    </span>
+                    <span className="shrink-0 p-1.5 bg-white rounded-full shadow-sm text-[#D4AF37]">
+                      {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <div className="px-6 pb-6 pt-2 border-t border-white/50 text-[#555555] text-xs md:text-sm leading-relaxed font-light">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

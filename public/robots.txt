@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Chặn thu thập dữ liệu các trang admin hoặc trang nhạy cảm nếu có trong tương lai
+Disallow: /admin/
+Disallow: /private/
+
+# Đường dẫn đến Sitemap của website
+Sitemap: https://huonghouse-spa.com/sitemap.xml
