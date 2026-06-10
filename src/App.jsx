@@ -88,6 +88,7 @@ const App = () => {
   const [activeHifuImg, setActiveHifuImg] = useState(0);
   const [selectedImg, setSelectedImg] = useState(null);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [activePricingTab, setActivePricingTab] = useState("skincare");
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -97,19 +98,42 @@ const App = () => {
     document.head.appendChild(link);
   }, []);
 
- const pricingData = [
-  { name: "Nặn Mụn Cơ Bản", price: "250", unit: "k", desc: "Làm sạch da cơ bản" },
-  { name: "Nặn Mụn Oxygen", price: "380", unit: "k", desc: "Phục hồi + giảm viêm" },
-  { name: "Nặn Mụn 4F", price: "650", unit: "k", desc: "Điều trị mụn chuyên sâu" },
-  { name: "Nặn Mụn Skymedic", price: "1200", unit: "k", desc: "Công nghệ cao phục hồi da" },
-  { name: "Nặn Mụn Aquasure", price: "550", unit: "k", desc: "Làm sạch + cấp ẩm" },
+  const skincarePricing = [
+    { name: "Nặn Mụn Cơ Bản", price: "250", unit: "k", desc: "Làm sạch da cơ bản" },
+    { name: "Nặn Mụn Oxygen", price: "380", unit: "k", desc: "Phục hồi + giảm viêm" },
+    { name: "Nặn Mụn 4F", price: "650", unit: "k", desc: "Điều trị mụn chuyên sâu" },
+    { name: "Nặn Mụn Skymedic", price: "1200", unit: "k", desc: "Công nghệ cao phục hồi da" },
+    { name: "Nặn Mụn Aquasure", price: "550", unit: "k", desc: "Làm sạch + cấp ẩm" },
+    { name: "Peel Da", price: "2200", unit: "k", desc: "Tái tạo da, giảm thâm" },
+    { name: "Meso Therapy", price: "2500 - 4000", unit: "k", desc: "Cấy dưỡng chất chuyên sâu" },
+    { name: "Siêu Cấp Ẩm", price: "850", unit: "k", desc: "Cấp ẩm phục hồi da" },
+    { name: "Peel Body (Nách/Mông/Lưng)", price: "2500 - 3000", unit: "k", desc: "Làm sáng và giảm thâm body" },
+  ];
 
-  { name: "Peel Da", price: "2200", unit: "k", desc: "Tái tạo da, giảm thâm" },
-  { name: "Meso Therapy", price: "2500 - 4000", unit: "k", desc: "Cấy dưỡng chất chuyên sâu" },
-  { name: "Siêu Cấp Ẩm", price: "850", unit: "k", desc: "Cấp ẩm phục hồi da" },
-
-  { name: "Peel Body (Nách/Mông/Lưng)", price: "2500 - 3000", unit: "k", desc: "Làm sáng và giảm thâm body" },
-];
+  const hairRemovalPricing = {
+    package: [
+      { name: "Trán", price: "1.200", unit: "k", desc: "Liệu trình triệt lông trán sạch mịn (Bảo hành)" },
+      { name: "Mép", price: "1.200", unit: "k", desc: "Liệu trình triệt lông mép nhẹ nhàng (Bảo hành)" },
+      { name: "Cằm", price: "1.200", unit: "k", desc: "Liệu trình triệt lông vùng cằm (Bảo hành)" },
+      { name: "Mặt", price: "2.800", unit: "k", desc: "Liệu trình triệt lông toàn mặt sáng da (Bảo hành)" },
+      { name: "Nách", price: "2.200", unit: "k", desc: "Liệu trình triệt lông nách sáng mịn (Bảo hành)" },
+      { name: "Lưng", price: "2.300", unit: "k", desc: "Liệu trình triệt lông vùng lưng mịn màng (Bảo hành)" },
+      { name: "Bụng", price: "2.300", unit: "k", desc: "Liệu trình triệt lông vùng bụng (Bảo hành)" },
+      { name: "Nửa 2 tay", price: "2.500", unit: "k", desc: "Liệu trình triệt lông nửa 2 tay (Bảo hành)" },
+      { name: "Cả 2 tay", price: "3.200", unit: "k", desc: "Liệu trình triệt lông cả 2 tay (Bảo hành)" },
+      { name: "Nửa 2 chân", price: "3.200", unit: "k", desc: "Liệu trình triệt lông nửa 2 chân (Bảo hành)" },
+      { name: "Cả 2 chân", price: "4.600", unit: "k", desc: "Liệu trình triệt lông cả 2 chân (Bảo hành)" },
+      { name: "Bikini", price: "4.800", unit: "k", desc: "Liệu trình triệt lông vùng bikini an toàn (Bảo hành)" },
+      { name: "Triệt toàn thân", price: "15.000", unit: "k", desc: "Liệu trình triệt lông toàn thân trọn gói (Bảo hành)" }
+    ],
+    single: [
+      { name: "Mặt", price: "300", unit: "k/buổi", desc: "Triệt lông mặt buổi lẻ" },
+      { name: "Nách", price: "300", unit: "k/buổi", desc: "Triệt lông nách buổi lẻ" },
+      { name: "Tay", price: "400", unit: "k/buổi", desc: "Triệt lông tay buổi lẻ" },
+      { name: "Chân", price: "600", unit: "k/buổi", desc: "Triệt lông chân buổi lẻ" },
+      { name: "Bikini", price: "400", unit: "k/buổi", desc: "Triệt lông bikini buổi lẻ" }
+    ]
+  };
 
   return (
     <div
@@ -537,34 +561,138 @@ const App = () => {
             Menu Dịch Vụ
           </span>
           <h2
-            className="text-3xl md:text-5xl font-bold mb-16"
+            className="text-3xl md:text-5xl font-bold mb-10"
             style={{ fontFamily: '"Playfair Display", serif' }}
           >
             Bảng Giá Niêm Yết
           </h2>
-          <div className="max-w-4xl mx-auto space-y-2">
-            {pricingData.map((item, i) => (
-              <div
-                key={i}
-                className="flex justify-between items-center py-6 border-b border-gray-50 group hover:px-6 transition-all hover:bg-[#FAF7F2] rounded-3xl"
-              >
-                <div className="text-left">
-                  <h4 className="font-bold text-sm md:text-lg uppercase">
-                    {item.name}
-                  </h4>
-                  <p className="text-gray-400 text-[10px]">{item.desc}</p>
+
+          {/* TABS SELECTOR */}
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-16">
+            <button
+              onClick={() => setActivePricingTab("skincare")}
+              className={`px-6 py-3 rounded-full font-semibold text-[10px] md:text-xs tracking-wider uppercase transition-all duration-300 shadow-sm ${
+                activePricingTab === "skincare"
+                  ? "bg-[#D4AF37] text-white"
+                  : "bg-[#FAF7F2] text-[#2D2D2D] hover:bg-[#FAF7F2]/80"
+              }`}
+            >
+              Chăm Sóc & Điều Trị Da
+            </button>
+            <button
+              onClick={() => setActivePricingTab("hairRemoval")}
+              className={`px-6 py-3 rounded-full font-semibold text-[10px] md:text-xs tracking-wider uppercase transition-all duration-300 shadow-sm ${
+                activePricingTab === "hairRemoval"
+                  ? "bg-[#D4AF37] text-white"
+                  : "bg-[#FAF7F2] text-[#2D2D2D] hover:bg-[#FAF7F2]/80"
+              }`}
+            >
+              Triệt Lông (Diode Laser)
+            </button>
+          </div>
+
+          {activePricingTab === "skincare" ? (
+            <div className="max-w-4xl mx-auto space-y-2 animate-fadeIn">
+              {skincarePricing.map((item, i) => (
+                <div
+                  key={i}
+                  className="flex justify-between items-center py-6 border-b border-gray-50 group hover:px-6 transition-all hover:bg-[#FAF7F2] rounded-3xl"
+                >
+                  <div className="text-left">
+                    <h4 className="font-bold text-sm md:text-lg uppercase">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 text-[10px]">{item.desc}</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="font-bold text-[#2D2D2D] text-lg md:text-2xl">
+                      {item.price}
+                    </span>
+                    <span className="text-[#D4AF37] font-bold text-sm ml-1">
+                      {item.unit}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-right shrink-0">
-                  <span className="font-bold text-[#2D2D2D] text-lg md:text-2xl">
-                    {item.price}
-                  </span>
-                  <span className="text-[#D4AF37] font-bold text-sm ml-1">
-                    {item.unit}
-                  </span>
+              ))}
+            </div>
+          ) : (
+            <div className="max-w-4xl mx-auto text-left animate-fadeIn">
+              {/* Diode laser technology highlights */}
+              <div className="bg-[#FAF7F2] p-6 rounded-[2rem] mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <h4 className="font-bold text-sm md:text-lg text-[#2D2D2D] mb-1">
+                    Công nghệ Diode Laser & Đầu Triệt Lạnh
+                  </h4>
+                  <p className="text-gray-500 text-xs leading-relaxed">
+                    Sử dụng bước sóng laser thông minh triệt sạch tận gốc nang lông. Đầu triệt lạnh làm dịu da tức thì, không gây bỏng rát hay đau đớn, se khít lỗ chân lông và làm sáng mịn vùng da trị liệu.
+                  </p>
+                </div>
+                <div className="bg-[#D4AF37]/10 text-[#D4AF37] px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest shrink-0">
+                  Bảo Hành Trọn Gói
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Sub-section 1: Liệu trình trọn gói */}
+              <div className="mb-12">
+                <h3 className="font-bold text-base md:text-lg text-[#2D2D2D] border-l-4 border-[#D4AF37] pl-3 mb-6 uppercase tracking-wider">
+                  Liệu Trình Trọn Gói (Bảo hành)
+                </h3>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-2">
+                  {hairRemovalPricing.package.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center py-4 border-b border-gray-50 group hover:px-4 transition-all hover:bg-[#FAF7F2] rounded-2xl"
+                    >
+                      <div className="text-left">
+                        <h4 className="font-bold text-xs md:text-sm uppercase">
+                          {item.name}
+                        </h4>
+                        <p className="text-gray-400 text-[9px]">{item.desc}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-bold text-[#2D2D2D] text-sm md:text-base">
+                          {item.price}
+                        </span>
+                        <span className="text-[#D4AF37] font-bold text-[10px] ml-1">
+                          {item.unit}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sub-section 2: Giá lẻ 1 buổi */}
+              <div>
+                <h3 className="font-bold text-base md:text-lg text-[#2D2D2D] border-l-4 border-[#D4AF37] pl-3 mb-6 uppercase tracking-wider">
+                  Giá Lẻ 1 Buổi Trải Nghiệm
+                </h3>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-2">
+                  {hairRemovalPricing.single.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center py-4 border-b border-gray-50 group hover:px-4 transition-all hover:bg-[#FAF7F2] rounded-2xl"
+                    >
+                      <div className="text-left">
+                        <h4 className="font-bold text-xs md:text-sm uppercase">
+                          {item.name}
+                        </h4>
+                        <p className="text-gray-400 text-[9px]">{item.desc}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-bold text-[#2D2D2D] text-sm md:text-base">
+                          {item.price}
+                        </span>
+                        <span className="text-[#D4AF37] font-bold text-[10px] ml-1">
+                          {item.unit}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
